@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { createUser } from '../services/userAPI';
 
 export default class Login extends Component {
   render() {
-    const { userInputName, isSaveButtonDisabled, checkUserName } = this.props;
+    const { userInputName, isSaveButtonDisabled, checkUserName, haveUser } = this.props;
     return (
       <div data-testid="page-login">
         <Link to="/">Login</Link>
@@ -30,7 +30,7 @@ export default class Login extends Component {
         >
           Entrar
         </button>
-        { <p>Carregando...</p>}
+        {haveUser ? <Redirect to="/search" /> : <p>Carregando...</p> }
       </div>
     );
   }
@@ -40,4 +40,5 @@ Login.propTypes = {
   userInputName: PropTypes.string.isRequired,
   isSaveButtonDisabled: PropTypes.bool.isRequired,
   checkUserName: PropTypes.func.isRequired,
+  haveUser: PropTypes.bool.isRequired,
 };

@@ -14,6 +14,7 @@ class App extends React.Component {
     this.state = {
       userInputName: '',
       isSaveButtonDisabled: true,
+      haveUser: false,
     };
   }
 
@@ -30,17 +31,19 @@ class App extends React.Component {
         userInputName.length >= minAtrr) {
         this.setState({
           isSaveButtonDisabled: false,
+          haveUser: true,
         });
       } else {
         this.setState({
           isSaveButtonDisabled: true,
+          haveUser: false,
         });
       }
     });
   };
 
   render() {
-    const { userInputName, isSaveButtonDisabled } = this.state;
+    const { userInputName, isSaveButtonDisabled, haveUser } = this.state;
     return (
       <>
         <Route exact path="/">
@@ -48,6 +51,7 @@ class App extends React.Component {
             userInputName={ userInputName }
             isSaveButtonDisabled={ isSaveButtonDisabled }
             checkUserName={ this.checkUserName }
+            haveUser={ haveUser }
           />
         </Route>
         <Route exact path="/search" component={ Search } />
