@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { createUser } from '../services/userAPI';
 
 export default class Login extends Component {
   render() {
-    const { userInputName, isSaveButtonDisabled, checkUserName, haveUser } = this.props;
+    const {
+      userInputName,
+      isSaveButtonDisabled,
+      checkUserName,
+      saveUserInit,
+      handleClick,
+      saveUserEnd,
+      redirectSearch } = this.props;
     return (
       <div data-testid="page-login">
         <Link to="/">Login</Link>
@@ -16,7 +22,7 @@ export default class Login extends Component {
             id="login-name-input"
             value={ userInputName }
             name="userInputName"
-            onChange={ () => checkUserName }
+            onChange={ checkUserName }
           />
         </label>
         <button
@@ -24,13 +30,12 @@ export default class Login extends Component {
           disabled={ isSaveButtonDisabled }
           id="loginbutton"
           data-testid="login-submit-button"
-          onClick={ () => {
-            createUser({ name: `${userInputName}` });
-          } }
+          onClick={ handleClick }
         >
           Entrar
         </button>
-        {haveUser ? <Redirect to="/search" /> : <p>Carregando...</p> }
+        { saveUserInit && saveUserEnd && <p>Carregando...</p> }
+        { redirectSearch && <Redirect to="/search" /> }
       </div>
     );
   }
@@ -40,5 +45,8 @@ Login.propTypes = {
   userInputName: PropTypes.string.isRequired,
   isSaveButtonDisabled: PropTypes.bool.isRequired,
   checkUserName: PropTypes.func.isRequired,
-  haveUser: PropTypes.bool.isRequired,
+  saveUserInit: PropTypes.bool.isRequired,
+  handleClick: PropTypes.func.isRequired,
+  saveUserEnd: PropTypes.bool.isRequired,
+  redirectSearch: PropTypes.bool.isRequired,
 };

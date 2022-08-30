@@ -7,6 +7,7 @@ import Favorites from './pages/Favorites';
 import Profile from './pages/Profile';
 import ProfileEdit from './pages/ProfileEdit';
 import NotFound from './pages/NotFound';
+import { createUser } from './services/userAPI';
 
 class App extends React.Component {
   constructor() {
@@ -14,7 +15,9 @@ class App extends React.Component {
     this.state = {
       userInputName: '',
       isSaveButtonDisabled: true,
-      haveUser: false,
+      saveUserInit: false,
+      saveUserEnd: true,
+      redirectSearch: false,
     };
   }
 
@@ -31,19 +34,35 @@ class App extends React.Component {
         userInputName.length >= minAtrr) {
         this.setState({
           isSaveButtonDisabled: false,
-          haveUser: true,
         });
       } else {
         this.setState({
           isSaveButtonDisabled: true,
-          haveUser: false,
         });
       }
     });
   };
 
+  handleClick = () => {
+    this.setState({
+      saveUserInit: true,
+    }, async () => {
+      const { userInputName } = this.state;
+      await createUser({ name: userInputName });
+      this.setState({
+        saveUserEnd: false,
+        redirectSearch: true,
+      });
+    });
+  };
+
   render() {
-    const { userInputName, isSaveButtonDisabled, haveUser } = this.state;
+    const {
+      userInputName,
+      isSaveButtonDisabled,
+      saveUserInit,
+      saveUserEnd,
+      redirectSearch } = this.state;
     return (
       <>
         <Route exact path="/">
@@ -51,7 +70,10 @@ class App extends React.Component {
             userInputName={ userInputName }
             isSaveButtonDisabled={ isSaveButtonDisabled }
             checkUserName={ this.checkUserName }
-            haveUser={ haveUser }
+            saveUserInit={ saveUserInit }
+            handleClick={ this.handleClick }
+            saveUserEnd={ saveUserEnd }
+            redirectSearch={ redirectSearch }
           />
         </Route>
         <Route exact path="/search" component={ Search } />
