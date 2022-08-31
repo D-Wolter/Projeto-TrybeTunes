@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import searchAlbumsAPI from '../services/searchAlbumsAPI';
@@ -44,7 +44,7 @@ export default class Search extends Component {
     this.setState({
       userInputArtist: '',
       loading: true }, async () => {
-      const searchUser = await searchAlbumsAPI(copyUserInputName);
+      const searchUser = await searchAlbumsAPI(userInputArtist);
       this.setState({
         loading: false,
         copyname: copyUserInputName,
@@ -91,8 +91,8 @@ export default class Search extends Component {
             <div>
               <p>{`Resultado de álbuns de: ${copyname}`}</p>
               {
-                result.map((element) => (
-                  <div key={ element.artistId }>
+                result.map((element, index) => (
+                  <div key={ `${element.artistId}${index}` }>
                     <img src={ element.artworkUrl100 } alt={ element.artistName } />
                     <p>{`Álbum ${element.trackCount} ${element.collectionName}`}</p>
                     <p>{`Artista ${element.artistName}`}</p>
