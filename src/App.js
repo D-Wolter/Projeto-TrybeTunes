@@ -7,7 +7,8 @@ import Favorites from './pages/Favorites';
 import Profile from './pages/Profile';
 import ProfileEdit from './pages/ProfileEdit';
 import NotFound from './pages/NotFound';
-import { createUser } from './services/userAPI';
+import Header from './components/Header';
+import { createUser, getUser } from './services/userAPI';
 
 class App extends React.Component {
   constructor() {
@@ -18,8 +19,23 @@ class App extends React.Component {
       saveUserInit: false,
       saveUserEnd: true,
       redirectSearch: false,
+      headerInit: false,
+      headerEnd: true,
+      showName: false,
     };
   }
+
+  mounthHeader = () => {
+    this.setState({
+      headerInit: true,
+    }, async () => {
+      await getUser();
+      this.setState({
+        headerEnd: false,
+        showName: true,
+      });
+    });
+  };
 
   checkUserName = ({ target }) => {
     const { name, type } = target;
@@ -62,9 +78,19 @@ class App extends React.Component {
       isSaveButtonDisabled,
       saveUserInit,
       saveUserEnd,
-      redirectSearch } = this.state;
+      redirectSearch,
+      mounthHeader,
+      headerInit,
+      headerEnd } = this.state;
     return (
       <>
+        <Header
+          mounthHeader={ mounthHeader }
+          headerInit={ headerInit }
+          headerEnd={ headerEnd }
+          showName={ showName }
+          userInputName={ userInputName }
+        />
         <Route exact path="/">
           <Login
             userInputName={ userInputName }
@@ -74,6 +100,7 @@ class App extends React.Component {
             handleClick={ this.handleClick }
             saveUserEnd={ saveUserEnd }
             redirectSearch={ redirectSearch }
+            headerEnd={ headerEnd }
           />
         </Route>
         <Route exact path="/search" component={ Search } />

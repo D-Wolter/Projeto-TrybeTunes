@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Loading from '../components/Loading';
 
 export default class Login extends Component {
   render() {
@@ -34,7 +35,7 @@ export default class Login extends Component {
         >
           Entrar
         </button>
-        { saveUserInit && saveUserEnd && <p>Carregando...</p> }
+        { saveUserInit && saveUserEnd && <Loading /> }
         { redirectSearch && <Redirect to="/search" /> }
       </div>
     );
