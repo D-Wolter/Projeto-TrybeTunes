@@ -37,15 +37,15 @@ export default class Header extends Component {
       logedName } = this.state;
     return (
       <header data-testid="header-component">
+        <div>
+          { headerInit && headerEnd && <Loading /> }
+          { displayName && <p data-testid="header-user-name">{logedName}</p> }
+        </div>
         <nav>
           <Link data-testid="link-to-search" to="/search">Search</Link>
           <Link data-testid="link-to-favorites" to="/favorites">Favorites</Link>
           <Link data-testid="link-to-profile" to="/profile">Profile</Link>
         </nav>
-        <div>
-          { headerInit && headerEnd && <Loading /> }
-          { displayName && <p data-testid="header-user-name">{logedName}</p> }
-        </div>
       </header>
     );
   }
