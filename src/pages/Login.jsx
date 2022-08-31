@@ -1,18 +1,62 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import Loading from '../components/Loading';
+import { createUser } from '../services/userAPI';
 
 export default class Login extends Component {
+  constructor() {
+    super();
+    this.state = {
+      userInputName: '',
+      isSaveButtonDisabled: true,
+      saveUserInit: false,
+      saveUserEnd: true,
+      redirectSearch: false,
+    };
+  }
+
+  checkUserName = ({ target }) => {
+    const { name, type } = target;
+    const value = type === 'checkbox' ? target.checked : target.value;
+    this.setState({
+      [name]: value,
+    }, () => {
+      const {
+        userInputName } = this.state;
+      const minAtrr = 3;
+      if (
+        userInputName.length >= minAtrr) {
+        this.setState({
+          isSaveButtonDisabled: false,
+        });
+      } else {
+        this.setState({
+          isSaveButtonDisabled: true,
+        });
+      }
+    });
+  };
+
+  handleClick = () => {
+    this.setState({
+      saveUserInit: true,
+    }, async () => {
+      const { userInputName } = this.state;
+      await createUser({ name: userInputName });
+      this.setState({
+        saveUserEnd: false,
+        redirectSearch: true,
+      });
+    });
+  };
+
   render() {
     const {
       userInputName,
       isSaveButtonDisabled,
-      checkUserName,
       saveUserInit,
-      handleClick,
       saveUserEnd,
-      redirectSearch } = this.props;
+      redirectSearch } = this.state;
     return (
       <div data-testid="page-login">
         <label htmlFor="login-name-input">
@@ -22,7 +66,7 @@ export default class Login extends Component {
             id="login-name-input"
             value={ userInputName }
             name="userInputName"
-            onChange={ checkUserName }
+            onChange={ this.checkUserName }
           />
         </label>
         <button
@@ -30,7 +74,7 @@ export default class Login extends Component {
           disabled={ isSaveButtonDisabled }
           id="loginbutton"
           data-testid="login-submit-button"
-          onClick={ handleClick }
+          onClick={ this.handleClick }
         >
           Entrar
         </button>
@@ -40,13 +84,3 @@ export default class Login extends Component {
     );
   }
 }
-
-Login.propTypes = {
-  userInputName: PropTypes.string.isRequired,
-  isSaveButtonDisabled: PropTypes.bool.isRequired,
-  checkUserName: PropTypes.func.isRequired,
-  saveUserInit: PropTypes.bool.isRequired,
-  handleClick: PropTypes.func.isRequired,
-  saveUserEnd: PropTypes.bool.isRequired,
-  redirectSearch: PropTypes.bool.isRequired,
-};
