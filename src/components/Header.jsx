@@ -1,33 +1,50 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Loading from './Loading';
+import { getUser } from '../services/userAPI';
 
 export default class Header extends Component {
-  // componentDidMount() {
-  //   this.mounthHeader();
-  // }
+  constructor() {
+    super();
+    this.state = {
+      headerInit: false,
+      headerEnd: true,
+      displayName: false,
+      logedName: '',
+    };
+  }
+
+  componentDidMount() {
+    this.setState({
+      headerInit: true,
+    });
+    const userOnly = async () => {
+      const userName = await getUser();
+      this.setState({
+        logedName: userName.name,
+        headerEnd: false,
+        displayName: true,
+      });
+    };
+    userOnly();
+  }
 
   render() {
     const {
       headerInit,
       headerEnd,
       displayName,
-      userInputName,
-      mounthHeader } = this.props;
+      logedName } = this.state;
     return (
-      <head data-testid="header-component">
-        { headerInit && headerEnd && <Loading /> }
-        { displayName && <p>{userInputName}</p> }
-        { mounthHeader }
-      </head>
+      <header data-testid="header-component">
+        <div>
+          { headerInit && headerEnd && <Loading /> }
+          { displayName && <p data-testid="header-user-name">{logedName}</p> }
+        </div>
+        <Link data-testid="link-to-search" to="/search">Search</Link>
+        <Link data-testid="link-to-favorites" to="/favorites">Favorites</Link>
+        <Link data-testid="link-to-profile" to="/profile">Profile</Link>
+      </header>
     );
   }
 }
-
-Header.propTypes = {
-  headerInit: PropTypes.bool.isRequired,
-  headerEnd: PropTypes.bool.isRequired,
-  displayName: PropTypes.bool.isRequired,
-  userInputName: PropTypes.string.isRequired,
-  mounthHeader: PropTypes.func.isRequired,
-};

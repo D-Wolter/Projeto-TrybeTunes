@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Loading from '../components/Loading';
 
@@ -15,7 +15,6 @@ export default class Login extends Component {
       redirectSearch } = this.props;
     return (
       <div data-testid="page-login">
-        <Link to="/">Login</Link>
         <label htmlFor="login-name-input">
           <input
             type="text"

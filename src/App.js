@@ -8,7 +8,7 @@ import Profile from './pages/Profile';
 import ProfileEdit from './pages/ProfileEdit';
 import NotFound from './pages/NotFound';
 import Header from './components/Header';
-import { createUser, getUser } from './services/userAPI';
+import { createUser } from './services/userAPI';
 
 class App extends React.Component {
   constructor() {
@@ -24,18 +24,6 @@ class App extends React.Component {
       displayName: false,
     };
   }
-
-  mounthHeader = () => {
-    this.setState({
-      headerInit: true,
-    }, async () => {
-      await getUser();
-      this.setState({
-        headerEnd: false,
-        displayName: true,
-      });
-    });
-  };
 
   checkUserName = ({ target }) => {
     const { name, type } = target;
