@@ -21,7 +21,7 @@ class App extends React.Component {
       redirectSearch: false,
       headerInit: false,
       headerEnd: true,
-      showName: false,
+      displayName: false,
     };
   }
 
@@ -32,7 +32,7 @@ class App extends React.Component {
       await getUser();
       this.setState({
         headerEnd: false,
-        showName: true,
+        displayName: true,
       });
     });
   };
@@ -79,16 +79,16 @@ class App extends React.Component {
       saveUserInit,
       saveUserEnd,
       redirectSearch,
-      mounthHeader,
       headerInit,
-      headerEnd } = this.state;
+      headerEnd,
+      displayName } = this.state;
     return (
       <>
         <Header
-          mounthHeader={ mounthHeader }
+          mounthHeader={ this.mounthHeader }
           headerInit={ headerInit }
           headerEnd={ headerEnd }
-          showName={ showName }
+          displayName={ displayName }
           userInputName={ userInputName }
         />
         <Route exact path="/">

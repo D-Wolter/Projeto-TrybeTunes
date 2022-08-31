@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Loading from './Loading';
 
 export default class Header extends Component {
-  componentDidMount() {
-    this.mounthHeader();
-  }
+  // componentDidMount() {
+  //   this.mounthHeader();
+  // }
 
   render() {
-    const { headerInit, headerEnd, showName, userInputName } = this.props;
+    const {
+      headerInit,
+      headerEnd,
+      displayName,
+      userInputName,
+      mounthHeader } = this.props;
     return (
-      <header data-testid="header-component">
+      <head data-testid="header-component">
         { headerInit && headerEnd && <Loading /> }
-        { showName
-          && <p>
-            `$
-            {userInputName}
-            `
-          </p> };
-      </header>
+        { displayName && <p>{userInputName}</p> }
+        { mounthHeader }
+      </head>
     );
   }
 }
@@ -25,4 +27,7 @@ export default class Header extends Component {
 Header.propTypes = {
   headerInit: PropTypes.bool.isRequired,
   headerEnd: PropTypes.bool.isRequired,
+  displayName: PropTypes.bool.isRequired,
+  userInputName: PropTypes.string.isRequired,
+  mounthHeader: PropTypes.func.isRequired,
 };
