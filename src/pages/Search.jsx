@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 import Header from '../components/Header';
+import Loading from '../components/Loading';
+import searchAlbumsAPI from '../services/searchAlbumsAPI';
 
 export default class Search extends Component {
   constructor() {
@@ -7,6 +10,9 @@ export default class Search extends Component {
     this.state = {
       userInputArtist: '',
       isSaveButtonDisabled: true,
+      loading: false,
+      result: [],
+      copyname: '',
     };
   }
 
@@ -32,43 +38,77 @@ export default class Search extends Component {
     });
   };
 
-  handleClick = () => {
-    // this.setState({
-    //   saveUserInit: true,
-    // }, async () => {
-    //   const { userInputName } = this.state;
-    //   await createUser({ name: userInputName });
-    //   this.setState({
-    //     saveUserEnd: false,
-    //     redirectSearch: true,
-    //   });
-    // });
+  handleClick = async () => {
+    const { userInputArtist } = this.state;
+    const copyUserInputName = userInputArtist;
+    this.setState({
+      userInputArtist: '',
+      loading: true }, async () => {
+      const searchUser = await searchAlbumsAPI(copyUserInputName);
+      this.setState({
+        loading: false,
+        copyname: copyUserInputName,
+        result: searchUser,
+      });
+    });
   };
 
   render() {
     const {
       userInputArtist,
-      isSaveButtonDisabled } = this.state;
+      isSaveButtonDisabled,
+      loading,
+      copyname,
+      result } = this.state;
     return (
       <div data-testid="page-search">
         <Header />
-        <label htmlFor="search-artist-input">
-          <input
-            type="text"
-            data-testid="search-artist-input"
-            value={ userInputArtist }
-            name="userInputArtist"
-            onChange={ this.checkUserName }
-          />
-        </label>
-        <button
-          type="button"
-          disabled={ isSaveButtonDisabled }
-          data-testid="search-artist-button"
-          onClick={ this.handleClick }
-        >
-          Pesquisar
-        </button>
+        { loading === true ? (
+          <Loading />
+        ) : (
+          <div>
+            <label htmlFor="search-artist-input">
+              <input
+                type="text"
+                data-testid="search-artist-input"
+                value={ userInputArtist }
+                name="userInputArtist"
+                onChange={ this.checkUserName }
+              />
+            </label>
+            <button
+              type="button"
+              disabled={ isSaveButtonDisabled }
+              data-testid="search-artist-button"
+              onClick={ this.handleClick }
+            >
+              Pesquisar
+            </button>
+          </div>
+        ) }
+        <div>
+          { result.length > 0 ? (
+            <div>
+              <p>{`Resultado de álbuns de: ${copyname}`}</p>
+              {
+                result.map((element) => (
+                  <div key={ element.artistId }>
+                    <img src={ element.artworkUrl100 } alt={ element.artistName } />
+                    <p>{`Álbum ${element.trackCount} ${element.collectionName}`}</p>
+                    <p>{`Artista ${element.artistName}`}</p>
+                    <Link
+                      data-testid={ `link-to-album-${element.collectionId}` }
+                      to={ `/album/${element.collectionId}` }
+                    >
+                      Album
+                    </Link>
+                  </div>
+                ))
+              }
+            </div>)
+            : (
+              <p>Nenhum álbum foi encontrado</p>)}
+        </div>
       </div>
     );
   }
