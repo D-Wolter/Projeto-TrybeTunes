@@ -52,7 +52,7 @@ export default class Favorites extends Component {
             <SongCard
               key={ song.trackNumber }
               trackName={ song.trackName }
-              previewUr={ song.previewUrl }
+              previewUrl={ song.previewUrl }
             />
             <label htmlFor={ `${index}${song.trackName}` }>
               Favorita
