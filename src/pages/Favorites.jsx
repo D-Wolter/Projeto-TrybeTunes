@@ -9,7 +9,7 @@ export default class Favorites extends Component {
     super();
     this.state = {
       loading: false,
-      favorites: {},
+      favorites: [],
     };
   }
 
