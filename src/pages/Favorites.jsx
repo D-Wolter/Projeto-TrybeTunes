@@ -66,7 +66,6 @@ export default class Favorites extends Component {
                 ) }
               />
             </label>
-
           </section>
         ))}
       </div>
