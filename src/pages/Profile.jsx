@@ -43,9 +43,9 @@ export default class Profile extends Component {
               <h3>Descrição</h3>
               <h2>{ description }</h2>
             </section>
-            <Link to="/profile/edit">Editar perfil</Link>
           </div>
         )}
+        <Link to="/profile/edit">Editar perfil</Link>
       </section>
     );
   }

@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
-import { getUser } from '../services/userAPI';
+import { getUser, updateUser } from '../services/userAPI';
 
 export default class ProfileEdit extends Component {
   constructor() {
     super();
     this.state = {
       loading: false,
-      userProfile: {},
       isDisabled: true,
-      tempName: '',
-      tempEmail: '',
-      tempDescription: '',
-      tempImage: '',
+      name: '',
+      email: '',
+      description: '',
+      image: '',
+      sendToProfilePage: false,
     };
   }
 
@@ -24,10 +25,10 @@ export default class ProfileEdit extends Component {
       });
       const setUser = await getUser();
       this.setState({
-        tempName: setUser.name,
-        tempEmail: setUser.email,
-        tempDescription: setUser.description,
-        tempImage: setUser.image,
+        name: setUser.name,
+        email: setUser.email,
+        description: setUser.description,
+        image: setUser.image,
         loading: false,
       });
     };
@@ -35,19 +36,17 @@ export default class ProfileEdit extends Component {
   }
 
   newDataInfo = ({ target }) => {
-    const { name, type } = target;
-    const value = type === 'checkbox' ? target.checked : target.value;
     this.setState({
-      [name]: value,
+      [target.name]: target.value,
     }, () => {
       const {
-        tempName, tempEmail, tempDescription, tempImage } = this.state;
+        name, email, description, image } = this.state;
       const minAtrr = 3;
       if (
-        tempName.length > minAtrr
-        && tempEmail.length > minAtrr
-        && tempDescription.length > minAtrr
-        && tempImage.length > minAtrr) {
+        name.length > minAtrr
+        && email.length > minAtrr
+        && description.length > minAtrr
+        && image.length > minAtrr) {
         this.setState({
           isDisabled: false,
         });
@@ -59,14 +58,28 @@ export default class ProfileEdit extends Component {
     });
   };
 
+  handleSave = async () => {
+    this.setState({
+      loading: true,
+    }, async () => {
+      const { name, image, description, email } = this.state;
+      await updateUser({ name, email, description, image });
+      this.setState({
+        loading: false,
+        sendToProfilePage: true,
+      });
+    });
+  };
+
   render() {
     const {
-      tempName,
-      tempDescription,
-      tempEmail,
-      tempImage,
+      name,
+      description,
+      email,
+      image,
       loading,
-      isDisabled } = this.state;
+      isDisabled,
+      sendToProfilePage } = this.state;
     return (
       <div data-testid="page-profile-edit">
         <Header />
@@ -74,12 +87,12 @@ export default class ProfileEdit extends Component {
           { loading ? <Loading /> : (
             <form>
               <div>
-                <img src={ tempImage } alt={ tempName } />
+                <img href={ image } alt={ name } />
                 <input
                   data-testid="edit-input-image"
-                  name="tempImage"
+                  name="image"
                   type="text"
-                  value={ tempImage }
+                  value={ image }
                   onChange={ this.newDataInfo }
                 />
               </div>
@@ -88,8 +101,8 @@ export default class ProfileEdit extends Component {
                 <h3>Fique à vontade para usar seu nome social</h3>
                 <input
                   data-testid="edit-input-name"
-                  name="tempName"
-                  value={ tempName }
+                  name="name"
+                  value={ name }
                   type="text"
                   onChange={ this.newDataInfo }
                 />
@@ -99,8 +112,8 @@ export default class ProfileEdit extends Component {
                 <h3>Escolha um e-mail queconsulte diariamente</h3>
                 <input
                   data-testid="edit-input-email"
-                  name="tempEmail"
-                  value={ tempEmail }
+                  name="email"
+                  value={ email }
                   type="text"
                   onChange={ this.newDataInfo }
                 />
@@ -110,8 +123,8 @@ export default class ProfileEdit extends Component {
                 <h3>Sobre mim</h3>
                 <textarea
                   data-testid="edit-input-description"
-                  name="tempDescription"
-                  value={ tempDescription }
+                  name="description"
+                  value={ description }
                   onChange={ this.newDataInfo }
                 />
               </div>
@@ -123,6 +136,7 @@ export default class ProfileEdit extends Component {
               >
                 Salvar
               </button>
+              { sendToProfilePage && <Redirect to="/profile" />}
             </form>
           )}
         </div>
