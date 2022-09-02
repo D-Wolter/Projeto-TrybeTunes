@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Loading from './Loading';
+import './Header.css';
 import { getUser } from '../services/userAPI';
 
 export default class Header extends Component {
@@ -37,7 +38,8 @@ export default class Header extends Component {
       logedName } = this.state;
     return (
       <header data-testid="header-component">
-        <div>
+        <div className="cabecalho">
+          <img src="imgs/trybe-tunes.jpg" alt="trybe-tunes" />
           { headerInit && headerEnd && <Loading /> }
           { displayName && <p data-testid="header-user-name">{logedName}</p> }
         </div>
