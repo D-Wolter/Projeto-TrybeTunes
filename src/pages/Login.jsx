@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { createUser } from '../services/userAPI';
+import './Login.css';
 
 export default class Login extends Component {
   constructor() {
@@ -58,9 +59,10 @@ export default class Login extends Component {
       saveUserEnd,
       redirectSearch } = this.state;
     return (
-      <div data-testid="page-login">
+      <div className="loginCont" data-testid="page-login">
         <label htmlFor="login-name-input">
           <input
+            className="inputName"
             type="text"
             data-testid="login-name-input"
             id="login-name-input"

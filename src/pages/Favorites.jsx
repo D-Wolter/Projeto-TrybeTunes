@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import Loading from '../components/Loading';
 import SongCard from '../components/SongCard';
 import { getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
+import './Favorite.css';
 
 export default class Favorites extends Component {
   constructor() {
@@ -48,11 +49,12 @@ export default class Favorites extends Component {
       <div data-testid="page-favorites">
         <Header />
         { loading ? <Loading /> : favorites.map((song, index) => (
-          <section key={ song.trackId }>
+          <section className="favContainer" key={ song.trackId }>
             <SongCard
               key={ song.trackNumber }
               trackName={ song.trackName }
               previewUrl={ song.previewUrl }
+              artworkUrl100={ song.artworkUrl100 }
             />
             <label htmlFor={ `${index}${song.trackName}` }>
               Favorita

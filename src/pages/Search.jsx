@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import searchAlbumsAPI from '../services/searchAlbumsAPI';
+import './Search.css';
 
 export default class Search extends Component {
   constructor() {
@@ -66,9 +67,10 @@ export default class Search extends Component {
         { loading === true ? (
           <Loading />
         ) : (
-          <div>
+          <div className="search">
             <label htmlFor="search-artist-input">
               <input
+                className="inputSearch"
                 type="text"
                 data-testid="search-artist-input"
                 value={ userInputArtist }
@@ -77,6 +79,7 @@ export default class Search extends Component {
               />
             </label>
             <button
+              className="buttonSearch"
               type="button"
               disabled={ isSaveButtonDisabled }
               data-testid="search-artist-button"
@@ -88,11 +91,11 @@ export default class Search extends Component {
         ) }
         <div>
           { result.length > 0 ? (
-            <div>
-              <p>{`Resultado de álbuns de: ${copyname}`}</p>
+            <div className="cardContainer">
+              <p className="results">{`Resultado de álbuns de: ${copyname}`}</p>
               {
                 result.map((element, index) => (
-                  <div key={ `${element.artistId}${index}` }>
+                  <div className="cards" key={ `${element.artistId}${index}` }>
                     <img src={ element.artworkUrl100 } alt={ element.artistName } />
                     <p>{`Álbum ${element.trackCount} ${element.collectionName}`}</p>
                     <p>{`Artista ${element.artistName}`}</p>
@@ -107,7 +110,7 @@ export default class Search extends Component {
               }
             </div>)
             : (
-              <p>Nenhum álbum foi encontrado</p>)}
+              <p className="notFound">Nenhum álbum foi encontrado</p>)}
         </div>
       </div>
     );

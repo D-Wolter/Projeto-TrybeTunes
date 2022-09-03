@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Loading from './Loading';
 import { getUser } from '../services/userAPI';
+import './Header.css';
 
 export default class Header extends Component {
   constructor() {
@@ -36,16 +37,39 @@ export default class Header extends Component {
       displayName,
       logedName } = this.state;
     return (
-      <header data-testid="header-component">
+      <header className="headerContainer" data-testid="header-component">
         <div className="cabecalho">
-          <img src="imgs/trybe-tunes.jpg" alt="trybe-tunes" />
+          <img src="https://media-exp1.licdn.com/dms/image/C4E16AQEdCzVDzaIKqg/profile-displaybackgroundimage-shrink_200_800/0/1636508258022?e=2147483647&v=beta&t=XRuxAXzio19Qin1vqwyxlCqzGrGotD9VM7fN-5tXcfw" alt="trybe-tunes" />
+          <span className="tunes">Tunes</span>
           { headerInit && headerEnd && <Loading /> }
-          { displayName && <p data-testid="header-user-name">{logedName}</p> }
+          <div>
+            { displayName && (
+              <p data-testid="header-user-name" className="username">{logedName}</p>
+            ) }
+          </div>
         </div>
-        <nav>
-          <Link data-testid="link-to-search" to="/search">Search</Link>
-          <Link data-testid="link-to-favorites" to="/favorites">Favorites</Link>
-          <Link data-testid="link-to-profile" to="/profile">Profile</Link>
+        <nav className="linksNav">
+          <div>
+            <Link className="link" data-testid="link-to-search" to="/search">Search</Link>
+          </div>
+          <div>
+            <Link
+              className="link"
+              data-testid="link-to-favorites"
+              to="/favorites"
+            >
+              Favorites
+            </Link>
+          </div>
+          <div>
+            <Link
+              className="link"
+              data-testid="link-to-profile"
+              to="/profile"
+            >
+              Profile
+            </Link>
+          </div>
         </nav>
       </header>
     );

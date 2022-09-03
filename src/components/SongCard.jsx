@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './SongsCard.css';
 
 export default class SongCard extends Component {
   render() {
     const { trackName,
-      previewUrl } = this.props;
+      previewUrl, artworkUrl100 } = this.props;
     return (
-      <div>
-        <p>{trackName}</p>
-        <audio data-testid="audio-component" src={ previewUrl } controls>
-          <track kind="captions" />
-          O seu navegador não suporta o elemento
-          <code>audio</code>
-        </audio>
+      <div className="card">
+        <img src={ artworkUrl100 } alt="capa" />
+        <div>
+          <p>{trackName}</p>
+          <audio data-testid="audio-component" src={ previewUrl } controls>
+            <track kind="captions" />
+            O seu navegador não suporta o elemento
+            <code>audio</code>
+          </audio>
+        </div>
       </div>
     );
   }

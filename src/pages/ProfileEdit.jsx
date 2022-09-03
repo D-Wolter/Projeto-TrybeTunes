@@ -136,10 +136,10 @@ export default class ProfileEdit extends Component {
               >
                 Salvar
               </button>
-              { sendToProfilePage && <Redirect to="/profile" />}
             </form>
           )}
         </div>
+        { sendToProfilePage && <Redirect to="/profile" />}
       </div>
     );
   }
