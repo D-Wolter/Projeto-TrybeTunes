@@ -30,32 +30,34 @@ export default class ProfileEdit extends Component {
         description: setUser.description,
         image: setUser.image,
         loading: false,
-      });
+      }, this.validation);
     };
     infoProfile();
   }
 
+  validation = () => {
+    const {
+      name, email, description, image } = this.state;
+    const minAtrr = 3;
+    if (
+      name.length > minAtrr
+      && email.length > minAtrr
+      && description.length > minAtrr
+      && image.length > minAtrr) {
+      this.setState({
+        isDisabled: false,
+      });
+    } else {
+      this.setState({
+        isDisabled: true,
+      });
+    }
+  };
+
   newDataInfo = ({ target }) => {
     this.setState({
       [target.name]: target.value,
-    }, () => {
-      const {
-        name, email, description, image } = this.state;
-      const minAtrr = 3;
-      if (
-        name.length > minAtrr
-        && email.length > minAtrr
-        && description.length > minAtrr
-        && image.length > minAtrr) {
-        this.setState({
-          isDisabled: false,
-        });
-      } else {
-        this.setState({
-          isDisabled: true,
-        });
-      }
-    });
+    }, this.validation);
   };
 
   handleSave = async () => {
